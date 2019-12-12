@@ -25,12 +25,18 @@ window.addEventListener("load", function() {
          cargoStatus.innerHTML="Too Heavy"
          readyCheck=false;
          event.preventDefault();
+      }else{
+         cargoStatus.innerHTML="Cargo mass low enough for launch"
+
       }
-      if(fuelLevel.value<=10000){
+      if(fuelLevel.value<10000){
          launchStatus.innerHTML='<font color="red">Shuttle Not Ready For Launch</font>'
          fuelStatus.innerHTML="Not enough fuel"
          readyCheck=false;
          event.preventDefault();
+      }else{
+         fuelStatus.innerHTML="Fuel level high enough for launch"
+
       }
       if(pilotName.value===""){
          launchStatus.innerHTML='<font color="red">Shuttle Not Ready For Launch</font>'
