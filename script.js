@@ -2,14 +2,16 @@
 window.addEventListener("load", function() {
    let form = document.querySelector("form");
    form.addEventListener("submit", function(event) {
-      event.preventDefault();
+      
       let pilotName = document.querySelector("input[name=pilotName]");
       let copilotName = document.querySelector("input[name=copilotName]");
       let fuelLevel = document.querySelector("input[name=fuelLevel]");
       let cargoMass = document.querySelector("input[name=cargoMass]");
-      let readyCheck=false;
+      let readyCheck=true;
       if (pilotName.value === "" || copilotName.value === ""|| cargoMass.value===""||fuelLevel.value==="") {
          alert("All fields are required!");
+         readyCheck=false;
+         event.preventDefault();
          // stop the form submission
       }
       document.getElementById('faultyItems').style.visibility="visible";
@@ -21,37 +23,50 @@ window.addEventListener("load", function() {
       if(cargoMass.value>=10000){
          launchStatus.innerHTML='<font color="red">Shuttle Not Ready For Launch</font>'
          cargoStatus.innerHTML="Too Heavy"
+         readyCheck=false;
+         event.preventDefault();
       }
       if(fuelLevel.value<=10000){
          launchStatus.innerHTML='<font color="red">Shuttle Not Ready For Launch</font>'
          fuelStatus.innerHTML="Not enough fuel"
+         readyCheck=false;
+         event.preventDefault();
       }
       if(pilotName.value===""){
          launchStatus.innerHTML='<font color="red">Shuttle Not Ready For Launch</font>'
          pilotStatus.innerHTML="Pilot not Ready"
+         readyCheck=false;
+         event.preventDefault();
       }else{
          pilotStatus.innerHTML=`Pilot ${pilotName.value} Ready`
       }
       if(copilotName.value===""){
          launchStatus.innerHTML='<font color="red">Shuttle Not Ready For Launch</font>'
          copilotStatus.innerHTML="Co-pilot not Ready"
+         readyCheck=false;
+         event.preventDefault();
       }else{
          copilotStatus.innerHTML=`Co-pilot ${copilotName.value} Ready`
       }
-
+      if(readyCheck){
+         launchStatus.innerHTML="Ship ready for launch"
+         event.preventDefault();
+      }
+   
    });
    fetch("https://handlers.education.launchcode.org/static/planets.json").then( function(response) {
       response.json().then( function(json) {
          const div = document.getElementById("missionTarget");
          // Add HTML that includes the JSON data
+         let random=Math.ceil(Math.random()*6)
          div.innerHTML = `
             <ul>
-               <li>Name ${json[0].name}</li>
-               <li>Diameter: ${json[0].diameter}</li>
-               <li>Star: ${json[0].star}</li>
-               <li>Distance from Earth: ${json[0].distance}</li>
-               <li>Number of Moons: ${json[0].moons}</li>
-               <img src=${json[0].image}>
+               <li>Name ${json[random].name}</li>
+               <li>Diameter: ${json[random].diameter}</li>
+               <li>Star: ${json[random].star}</li>
+               <li>Distance from Earth: ${json[random].distance}</li>
+               <li>Number of Moons: ${json[random].moons}</li>
+               <img src=${json[random].image}>
             </ul>
          `;
       });
